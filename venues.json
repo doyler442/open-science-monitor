@@ -1,0 +1,229 @@
+{
+  "columns": [
+    "Open Access",
+    "Preprint",
+    "Open Data",
+    "Open Materials",
+    "Open Artefact",
+    "Registered Reports",
+    "Open Peer Review",
+    "Replication"
+  ],
+  "coding": {
+    "0": "Not addressed",
+    "1": "Permitted or available",
+    "2": "Required or actively offered"
+  },
+  "sections": [
+    {
+      "label": "Senior Scholars' List of Premier Journals",
+      "venues": [
+        {
+          "id": "dss",
+          "name": "Decision Support Systems",
+          "abbr": "DSS",
+          "url": "https://www.sciencedirect.com/journal/decision-support-systems",
+          "guide_urls": [
+            "https://www.sciencedirect.com/journal/decision-support-systems/publish/guide-for-authors"
+          ],
+          "vals": [1, 2, 1, 0, 0, 0, 0, 0]
+        },
+        {
+          "id": "ejis",
+          "name": "European Journal of Information Systems",
+          "abbr": "EJIS",
+          "url": "https://www.tandfonline.com/journals/tjis20",
+          "guide_urls": [
+            "https://www.tandfonline.com/journals/tjis20/about/aims-and-scope",
+            "https://www.tandfonline.com/journals/tjis20/about/author-guidelines"
+          ],
+          "vals": [1, 1, 0, 0, 0, 0, 0, 0]
+        },
+        {
+          "id": "im",
+          "name": "Information & Management",
+          "abbr": "I&M",
+          "html_name": "Information &amp; Management",
+          "url": "https://www.sciencedirect.com/journal/information-and-management",
+          "guide_urls": [
+            "https://www.sciencedirect.com/journal/information-and-management/publish/guide-for-authors"
+          ],
+          "vals": [1, 2, 0, 0, 0, 0, 0, 0]
+        },
+        {
+          "id": "io",
+          "name": "Information and Organization",
+          "abbr": "I&O",
+          "url": "https://www.sciencedirect.com/journal/information-and-organization",
+          "guide_urls": [
+            "https://www.sciencedirect.com/journal/information-and-organization/publish/guide-for-authors"
+          ],
+          "vals": [1, 2, 0, 0, 0, 0, 0, 0]
+        },
+        {
+          "id": "isj",
+          "name": "Information Systems Journal",
+          "abbr": "ISJ",
+          "url": "https://onlinelibrary.wiley.com/journal/13652575",
+          "guide_urls": [
+            "https://onlinelibrary.wiley.com/page/journal/13652575/homepage/forauthors.html"
+          ],
+          "vals": [1, 2, 2, 1, 0, 0, 0, 0]
+        },
+        {
+          "id": "isr",
+          "name": "Information Systems Research",
+          "abbr": "ISR",
+          "url": "https://pubsonline.informs.org/journal/isre",
+          "guide_urls": [
+            "https://pubsonline.informs.org/page/isre/submission-guidelines"
+          ],
+          "vals": [1, 0, 0, 0, 0, 0, 0, 0]
+        },
+        {
+          "id": "jais",
+          "name": "Journal of the Association for Information Systems",
+          "abbr": "JAIS",
+          "url": "https://aisel.aisnet.org/jais/",
+          "guide_urls": [
+            "https://aisel.aisnet.org/jais/authorinfo.html"
+          ],
+          "vals": [1, 0, 1, 0, 0, 0, 0, 0]
+        },
+        {
+          "id": "jit",
+          "name": "Journal of Information Technology",
+          "abbr": "JIT",
+          "url": "https://journals.sagepub.com/home/jin",
+          "guide_urls": [
+            "https://journals.sagepub.com/author-instructions/JIN"
+          ],
+          "vals": [1, 0, 0, 0, 0, 0, 0, 0]
+        },
+        {
+          "id": "jmis",
+          "name": "Journal of Management Information Systems",
+          "abbr": "JMIS",
+          "url": "https://www.tandfonline.com/journals/mmis20",
+          "guide_urls": [
+            "https://www.tandfonline.com/journals/mmis20/about/aims-and-scope",
+            "https://www.tandfonline.com/journals/mmis20/about/author-guidelines"
+          ],
+          "vals": [1, 1, 0, 0, 0, 0, 0, 0]
+        },
+        {
+          "id": "jsis",
+          "name": "Journal of Strategic Information Systems",
+          "abbr": "JSIS",
+          "url": "https://www.sciencedirect.com/journal/the-journal-of-strategic-information-systems",
+          "guide_urls": [
+            "https://www.sciencedirect.com/journal/the-journal-of-strategic-information-systems/publish/guide-for-authors"
+          ],
+          "vals": [1, 2, 0, 0, 0, 0, 0, 0]
+        },
+        {
+          "id": "misq",
+          "name": "MIS Quarterly",
+          "abbr": "MISQ",
+          "url": "https://misq.umn.edu/",
+          "guide_urls": [
+            "https://misq.umn.edu/submission-guidelines"
+          ],
+          "vals": [1, 0, 1, 1, 0, 0, 0, 0]
+        }
+      ]
+    },
+    {
+      "label": "AIS Journals",
+      "venues": [
+        {
+          "id": "cais",
+          "name": "Communications of the Association for Information Systems",
+          "abbr": "CAIS",
+          "url": "https://aisel.aisnet.org/cais/",
+          "guide_urls": [
+            "https://aisel.aisnet.org/cais/authorinfo.html"
+          ],
+          "vals": [2, 0, 0, 0, 0, 0, 2, 2]
+        },
+        {
+          "id": "bise",
+          "name": "Business & Information Systems Engineering",
+          "abbr": "BISE",
+          "html_name": "Business &amp; Information Systems Engineering",
+          "url": "https://www.bise-journal.com/",
+          "guide_urls": [
+            "https://www.bise-journal.com/submission-guidelines"
+          ],
+          "vals": [1, 0, 0, 0, 0, 1, 0, 0]
+        },
+        {
+          "id": "ajis",
+          "name": "Australasian Journal of Information Systems",
+          "abbr": "AJIS",
+          "url": "https://ajis.aaisnet.org/",
+          "guide_urls": [
+            "https://ajis.aaisnet.org/index.php/ajis/about/submissions"
+          ],
+          "vals": [2, 0, 1, 0, 0, 0, 0, 0]
+        }
+      ]
+    },
+    {
+      "label": "Major Conferences",
+      "venues": [
+        {
+          "id": "icis",
+          "name": "International Conference on Information Systems",
+          "abbr": "ICIS",
+          "url": "https://aisel.aisnet.org/icis/",
+          "guide_urls": [
+            "https://icis2026.aisconferences.org/submissions/"
+          ],
+          "vals": [0, 0, 0, 0, 0, 0, 0, 0]
+        },
+        {
+          "id": "ecis",
+          "name": "European Conference on Information Systems",
+          "abbr": "ECIS",
+          "url": "https://aisel.aisnet.org/ecis/",
+          "guide_urls": [
+            "https://ecis2026.eu/submissions/"
+          ],
+          "vals": [0, 0, 0, 0, 0, 0, 0, 0]
+        },
+        {
+          "id": "amcis",
+          "name": "Americas Conference on Information Systems",
+          "abbr": "AMCIS",
+          "url": "https://aisel.aisnet.org/amcis/",
+          "guide_urls": [
+            "https://amcis2026.aisconferences.org/submissions/"
+          ],
+          "vals": [0, 1, 0, 0, 0, 0, 0, 0]
+        },
+        {
+          "id": "hicss",
+          "name": "Hawaii International Conference on System Sciences",
+          "abbr": "HICSS",
+          "url": "https://hicss.hawaii.edu/",
+          "guide_urls": [
+            "https://hicss.hawaii.edu/authors/"
+          ],
+          "vals": [2, 0, 0, 0, 0, 0, 0, 0]
+        },
+        {
+          "id": "desrist",
+          "name": "Design Science Research in Information Systems and Technology",
+          "abbr": "DESRIST",
+          "url": "https://desrist.org/",
+          "guide_urls": [
+            "https://desrist.org/"
+          ],
+          "vals": [0, 0, 0, 0, 0, 0, 0, 0]
+        }
+      ]
+    }
+  ],
+  "last_reviewed": "2026-03-26"
+}

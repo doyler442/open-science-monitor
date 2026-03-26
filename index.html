@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How OPEN is the IS Discipline?</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600;700&display=swap');
+
+  :root {
+    --bg-from: #1B2735;
+    --bg-to: #090A0F;
+    --surface: rgba(18, 25, 33, 0.9);
+    --surface-raised: rgba(255, 255, 255, 0.05);
+    --border: rgba(100, 255, 218, 0.25);
+    --border-strong: rgba(100, 255, 218, 0.5);
+    --text: #e0e7ff;
+    --text-muted: #a0aac0;
+    --text-light: #6a7590;
+    --accent: #64ffda;
+    --accent-dim: rgba(100, 255, 218, 0.12);
+    --tick: #4ade80;
+    --tick-bg: rgba(74, 222, 128, 0.18);
+    --tick-border: #4ade80;
+    --tick-glow: rgba(74, 222, 128, 0.8);
+    --partial: #fbbf24;
+    --partial-bg: rgba(251, 191, 36, 0.15);
+    --partial-border: #fbbf24;
+    --partial-glow: rgba(251, 191, 36, 0.7);
+    --empty: rgba(255, 255, 255, 0.10);
+    --absent: #f87171;
+    --absent-bg: transparent;
+    --absent-border: #f87171;
+    --absent-glow: rgba(248, 113, 113, 0.6);
+    --header-bg: rgba(10, 14, 20, 0.95);
+    --header-text: #64ffda;
+    --row-alt: rgba(255, 255, 255, 0.02);
+    --section-bg: rgba(100, 255, 218, 0.08);
+    --purple: #c084fc;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: radial-gradient(ellipse at bottom, var(--bg-from) 0%, var(--bg-to) 100%);
+    background-attachment: fixed;
+    color: var(--text);
+    padding: 40px 24px;
+    font-size: 13px;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  .wrapper {
+    max-width: 1400px;
+    margin: 0 auto;
+    background: var(--surface);
+    border-radius: 1.5rem;
+    padding: 2.5rem;
+    box-shadow: 0 0 50px rgba(100, 255, 218, 0.15), 0 0 100px rgba(100, 255, 218, 0.05);
+    border: 1px solid rgba(100, 255, 218, 0.3);
+    /* Subtle grid texture matching poster */
+    background-image: linear-gradient(0deg, transparent 24%, rgba(100, 255, 218, 0.03) 25%, rgba(100, 255, 218, 0.03) 26%, transparent 27%, transparent 74%, rgba(100, 255, 218, 0.03) 75%, rgba(100, 255, 218, 0.03) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(100, 255, 218, 0.03) 25%, rgba(100, 255, 218, 0.03) 26%, transparent 27%, transparent 74%, rgba(100, 255, 218, 0.03) 75%, rgba(100, 255, 218, 0.03) 76%, transparent 77%, transparent);
+    background-size: 50px 50px;
+  }
+
+  header {
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    text-align: center;
+    border-bottom: none;
+    position: relative;
+  }
+
+  header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(100, 255, 218, 0.6), transparent);
+    box-shadow: 0 0 12px rgba(100, 255, 218, 0.3);
+  }
+
+  .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    text-shadow: 0 0 10px rgba(100, 255, 218, 0.6), 0 0 20px rgba(100, 255, 218, 0.3);
+    margin-bottom: 8px;
+  }
+
+  .author-line {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-bottom: 14px;
+  }
+
+  .author-link {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: rgba(100, 255, 218, 0.4);
+    transition: all 0.2s ease;
+  }
+
+  .author-link:hover {
+    text-shadow: 0 0 8px rgba(100, 255, 218, 0.5);
+    text-decoration-color: rgba(100, 255, 218, 1);
+  }
+
+  h1 {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 0;
+    color: #ffffff;
+    text-shadow: 0 0 15px rgba(100, 255, 218, 0.5), 0 0 40px rgba(100, 255, 218, 0.2);
+  }
+
+  .subtitle {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-weight: 400;
+    margin-top: 6px;
+  }
+
+  .controls {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .legend {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--text-muted);
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  .legend-cell {
+    width: 24px;
+    height: 24px;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    border-radius: 6px;
+  }
+
+  .btn-export {
+    background: transparent;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    padding: 7px 14px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    border-radius: 4px;
+    text-transform: uppercase;
+    transition: all 0.2s ease;
+  }
+
+  .btn-export:hover {
+    background: var(--accent);
+    color: #090A0F;
+    box-shadow: 0 0 15px rgba(100, 255, 218, 0.6), 0 0 30px rgba(100, 255, 218, 0.3);
+  }
+
+  .instruction {
+    font-size: 11px;
+    color: var(--text-light);
+    margin-bottom: 16px;
+    font-style: italic;
+  }
+
+  .table-wrap {
+    overflow-x: auto;
+    border: 1px solid rgba(100, 255, 218, 0.4);
+    border-radius: 8px;
+    box-shadow: 0 0 25px rgba(100, 255, 218, 0.12), inset 0 0 15px rgba(100, 255, 218, 0.04);
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 1050px;
+    background: rgba(10, 14, 20, 0.6);
+    table-layout: fixed;
+  }
+
+  thead tr:first-child th {
+    background: var(--header-bg);
+    color: var(--header-text);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 14px 6px;
+    text-align: center;
+    border-right: 1px solid rgba(100, 255, 218, 0.1);
+    font-weight: 600;
+    text-shadow: 0 0 8px rgba(100, 255, 218, 0.5), 0 0 16px rgba(100, 255, 218, 0.25);
+  }
+
+  thead tr:first-child th:first-child {
+    text-align: left;
+    padding-left: 16px;
+    width: 320px;
+    min-width: 300px;
+  }
+
+  thead tr:nth-child(2) th {
+    background: rgba(10, 14, 20, 0.8);
+    color: #ffffff;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 8px 4px;
+    text-align: center;
+    border-right: 1px solid rgba(100, 255, 218, 0.06);
+    font-weight: 500;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  thead tr:nth-child(2) th:first-child {
+    text-align: left;
+    padding-left: 16px;
+  }
+
+  .section-row td {
+    background: var(--section-bg);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    padding: 10px 16px;
+    border-top: 1px solid var(--border-strong);
+    font-weight: 500;
+    text-shadow: 0 0 8px rgba(100, 255, 218, 0.5), 0 0 16px rgba(100, 255, 218, 0.2);
+  }
+
+  tbody tr:not(.section-row) {
+    border-bottom: 1px solid rgba(100, 255, 218, 0.15);
+    transition: background 0.15s ease;
+  }
+
+  tbody tr:not(.section-row):hover {
+    background: rgba(100, 255, 218, 0.08);
+  }
+
+  tbody tr:not(.section-row):nth-child(even):not(.section-row) {
+    background: var(--row-alt);
+  }
+
+  tbody tr:not(.section-row):nth-child(even):not(.section-row):hover {
+    background: rgba(100, 255, 218, 0.08);
+  }
+
+  .journal-cell {
+    padding: 10px 16px;
+    border-right: 1px solid var(--border-strong);
+    min-width: 320px;
+  }
+
+  .journal-name {
+    font-weight: 500;
+    font-size: 12.5px;
+    display: block;
+    color: var(--text);
+  }
+
+  .journal-acronym {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+    display: block;
+    margin-top: 2px;
+  }
+
+  .journal-link {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: rgba(100, 255, 218, 0.4);
+    color: inherit;
+    display: block;
+    line-height: 1.4;
+    transition: all 0.2s ease;
+  }
+
+  .journal-link:hover .journal-name {
+    color: var(--accent);
+    text-shadow: 0 0 10px rgba(100, 255, 218, 0.6), 0 0 20px rgba(100, 255, 218, 0.3);
+  }
+
+  .journal-link:hover .journal-acronym {
+    color: var(--accent);
+  }
+
+  .data-cell {
+    text-align: center;
+    padding: 4px;
+    border-right: 1px solid rgba(100, 255, 218, 0.22);
+    cursor: default;
+    vertical-align: middle;
+    user-select: none;
+    position: relative;
+  }
+
+  .data-cell:last-child {
+    border-right: none;
+  }
+
+  .cell-inner {
+    width: 34px;
+    height: 34px;
+    margin: 0 auto;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+  }
+
+  .cell-inner.state-0 {
+    background: var(--absent-bg);
+    border: 1.5px solid var(--absent-border);
+    box-shadow: 0 0 6px var(--absent-glow), 0 0 14px rgba(248, 113, 113, 0.2);
+  }
+
+  .cell-inner.state-1 {
+    background: var(--partial-bg);
+    border: 1.5px solid var(--partial-border);
+    color: var(--partial);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    font-weight: 600;
+    box-shadow: 0 0 8px var(--partial-glow), 0 0 20px rgba(251, 191, 36, 0.3), inset 0 0 6px rgba(251, 191, 36, 0.15);
+    text-shadow: 0 0 6px var(--partial-glow), 0 0 12px rgba(251, 191, 36, 0.4);
+  }
+
+  .cell-inner.state-2 {
+    background: var(--tick-bg);
+    border: 1.5px solid var(--tick-border);
+    color: var(--tick);
+    font-size: 17px;
+    font-weight: 700;
+    box-shadow: 0 0 10px var(--tick-glow), 0 0 25px rgba(74, 222, 128, 0.35), inset 0 0 8px rgba(74, 222, 128, 0.15);
+    text-shadow: 0 0 8px var(--tick-glow), 0 0 16px rgba(74, 222, 128, 0.5);
+  }
+
+  .data-cell:hover .cell-inner.state-0 {
+    box-shadow: 0 0 10px var(--absent-glow), 0 0 25px rgba(248, 113, 113, 0.35);
+  }
+
+  .data-cell:hover .cell-inner {
+    transform: scale(1.12);
+  }
+
+  .data-cell:hover .cell-inner.state-2 {
+    box-shadow: 0 0 15px var(--tick-glow), 0 0 35px rgba(74, 222, 128, 0.5);
+  }
+
+  .data-cell:hover .cell-inner.state-1 {
+    box-shadow: 0 0 12px var(--partial-glow), 0 0 30px rgba(251, 191, 36, 0.45);
+  }
+
+  .notes-section {
+    margin-top: 28px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .notes-box {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    background: var(--surface-raised);
+    backdrop-filter: blur(5px);
+  }
+
+  .notes-box h3 {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    text-shadow: 0 0 8px rgba(100, 255, 218, 0.5);
+    text-decoration-color: rgba(100, 255, 218, 1);
+  }
+
+  .col-key {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px 16px;
+  }
+
+  .col-key-item {
+    font-size: 11px;
+    color: var(--text-muted);
+    display: flex;
+    gap: 6px;
+  }
+
+  .col-key-item strong {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--text);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .score-summary {
+    margin-top: 20px;
+    padding: 16px;
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    backdrop-filter: blur(5px);
+  }
+
+  .score-summary h3 {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+    text-shadow: 0 0 8px rgba(100, 255, 218, 0.5);
+    text-decoration-color: rgba(100, 255, 218, 1);
+    text-align: center;
+  }
+
+  .score-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 8px;
+  }
+
+  .score-item {
+    text-align: center;
+    padding: 10px 8px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--surface-raised);
+    transition: all 0.2s ease;
+  }
+
+  .score-item:hover {
+    border-color: var(--accent);
+    box-shadow: 0 0 15px rgba(100, 255, 218, 0.3), 0 0 30px rgba(100, 255, 218, 0.1);
+  }
+
+  .score-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    color: var(--text-muted);
+    display: block;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .score-val {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--accent);
+    font-family: 'IBM Plex Mono', monospace;
+    text-shadow: 0 0 10px rgba(100, 255, 218, 0.6), 0 0 25px rgba(100, 255, 218, 0.3);
+  }
+
+  .timestamp {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    color: var(--text-muted);
+    margin-top: 8px;
+    text-align: center;
+  }
+
+  @media print {
+    body { background: #090A0F; padding: 20px; }
+    .wrapper { box-shadow: none; border: none; }
+    .controls { display: none; }
+    .instruction { display: none; }
+    .data-cell { cursor: default; }
+  }
+
+  @media (max-width: 768px) {
+    body {
+      padding: 12px 8px;
+    }
+
+    .wrapper {
+      padding: 1.25rem;
+      border-radius: 1rem;
+    }
+
+    h1 {
+      font-size: 18px;
+    }
+
+    .subtitle {
+      font-size: 11px;
+    }
+
+    .controls {
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .legend {
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .table-wrap {
+      border-radius: 6px;
+      position: relative;
+    }
+
+    /* Scroll hint */
+    .table-wrap::after {
+      content: '← Scroll →';
+      display: block;
+      text-align: center;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      padding: 8px 0 4px;
+    }
+
+    .journal-cell {
+      min-width: 200px;
+      padding: 6px 8px;
+    }
+
+    .journal-name {
+      font-size: 11px;
+    }
+
+    .journal-acronym {
+      font-size: 9px;
+    }
+
+    .score-summary {
+      padding: 12px 8px;
+    }
+
+    .score-grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+    }
+
+    .score-label {
+      font-size: 7px;
+      letter-spacing: 0.03em;
+    }
+
+    .score-val {
+      font-size: 16px;
+    }
+
+    .notes-section {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .notes-box {
+      padding: 12px;
+    }
+
+    header::after {
+      left: 5%;
+      right: 5%;
+    }
+  }
+
+  @media (max-width: 420px) {
+    .wrapper {
+      padding: 1rem;
+      border-radius: 0.75rem;
+    }
+
+    h1 {
+      font-size: 16px;
+    }
+
+    .score-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <header>
+    <div class="author-line"><a href="https://cathaldoyle.com/wiki/my_research" class="author-link">← cathaldoyle.com</a></div>
+    <h1>How OPEN is the IS Discipline?</h1>
+    <div class="subtitle">Open science policies across IS journals and conferences</div>
+    <div class="timestamp" id="timestamp"></div>
+  </header>
+
+  <div class="controls">
+    <div class="legend">
+      <div class="legend-item">
+        <div class="legend-cell" style="background:rgba(74,222,128,0.18);border:1.5px solid #4ade80;color:#4ade80;font-size:17px;font-weight:700;box-shadow:0 0 10px rgba(74,222,128,0.8),0 0 25px rgba(74,222,128,0.35);text-shadow:0 0 8px rgba(74,222,128,0.8),0 0 16px rgba(74,222,128,0.5);">✓</div>
+        Required or actively offered
+      </div>
+      <div class="legend-item">
+        <div class="legend-cell" style="background:rgba(251,191,36,0.15);border:1.5px solid #fbbf24;color:#fbbf24;font-size:13px;font-family:monospace;font-weight:600;box-shadow:0 0 8px rgba(251,191,36,0.7),0 0 20px rgba(251,191,36,0.3);text-shadow:0 0 6px rgba(251,191,36,0.7),0 0 12px rgba(251,191,36,0.4);">~</div>
+        Permitted or available
+      </div>
+      <div class="legend-item">
+        <div class="legend-cell" style="background:transparent;border:1.5px solid #f87171;box-shadow:0 0 6px rgba(248,113,113,0.6),0 0 14px rgba(248,113,113,0.2);"></div>
+        Not addressed
+      </div>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <table id="matrix">
+      <colgroup>
+        <col style="width: 320px;">
+        <col span="8" style="width: calc((100% - 320px) / 8);">
+      </colgroup>
+      <thead>
+        <tr>
+          <th style="width:320px;">Venue</th>
+          <th colspan="2">Access</th>
+          <th colspan="3">Research Transparency</th>
+          <th colspan="2">Review Practices</th>
+          <th colspan="1">Replication</th>
+        </tr>
+        <tr>
+          <th>Journal / Conference</th>
+          <th title="Open Access policy explicitly stated">Open Access</th>
+          <th title="Preprint policy explicitly stated">Preprint</th>
+          <th title="Open Data — sharing required or encouraged">Open Data</th>
+          <th title="Open Materials — instruments/protocols">Open Materials</th>
+          <th title="Open Artefact — non-software research outputs">Open Artefact</th>
+          <th title="Registered Reports — study designs peer-reviewed before results are known">Registered Reports</th>
+          <th title="Open Peer Review">Open Peer Review</th>
+          <th title="Replication studies explicitly welcomed">Replication</th>
+        </tr>
+      </thead>
+      <tbody id="tbody">
+      </tbody>
+    </table>
+  </div>
+
+  <div class="score-summary">
+    <h3>Live Tally</h3>
+    <div class="score-grid" id="scoreGrid"></div>
+  </div>
+
+  <div class="notes-section" style="grid-template-columns: 1fr;">
+    <div class="notes-box">
+      <h3>Methodology Note</h3>
+      <p style="font-size:11px;color:var(--text-muted);line-height:1.6;">        Practices assessed from publicly stated venue policies (journal websites, author guidelines, calls for papers). 
+        Absence of explicit mention is coded as not addressed — not a negative assessment, but a reflection that the venue 
+        has not made a public commitment either way. Policies last reviewed: March 2026.
+      </p>
+    </div>
+  </div>
+
+  <div style="text-align:right;margin-top:20px;">
+    <button class="btn-export" onclick="exportCSV()">Export CSV</button>
+  </div>
+</div>
+
+<script src="venues-data.js"></script>
+<script>
+
+// State labels and rendering
+function stateLabel(s) {
+  if (s === 2) return '✓';
+  if (s === 1) return '~';
+  return '';
+}
+
+function stateClass(s) {
+  if (s === 2) return 'state-2';
+  if (s === 1) return 'state-1';
+  return 'state-0';
+}
+
+// Build table
+const tbody = document.getElementById('tbody');
+
+rows.forEach((row, ri) => {
+  const tr = document.createElement('tr');
+  if (row.section) {
+    tr.className = 'section-row';
+    const td = document.createElement('td');
+    td.colSpan = COLS.length + 1;
+    td.textContent = row.section;
+    tr.appendChild(td);
+    tbody.appendChild(tr);
+    return;
+  }
+
+  // Journal cell
+  const jTd = document.createElement('td');
+  jTd.className = 'journal-cell';
+  jTd.innerHTML = `<a href="${row.url}" target="_blank" rel="noopener" class="journal-link"><span class="journal-name">${row.name}</span><span class="journal-acronym">(${row.abbr})</span></a>`;
+  tr.appendChild(jTd);
+
+  // Data cells
+  row.vals.forEach((val, ci) => {
+    const td = document.createElement('td');
+    td.className = 'data-cell';
+    td.title = `${row.abbr} — ${COLS[ci]}`;
+    
+    const inner = document.createElement('div');
+    inner.className = `cell-inner ${stateClass(val)}`;
+    inner.textContent = stateLabel(val);
+    td.appendChild(inner);
+
+    tr.appendChild(td);
+  });
+
+  tbody.appendChild(tr);
+});
+
+// Score summary
+function updateScores() {
+  const scoreGrid = document.getElementById('scoreGrid');
+  const counts = Array(COLS.length).fill(0);
+  const partials = Array(COLS.length).fill(0);
+  
+  rows.forEach(row => {
+    if (row.section) return;
+    row.vals.forEach((v, ci) => {
+      if (v === 2) counts[ci]++;
+      if (v === 1) partials[ci]++;
+    });
+  });
+
+  scoreGrid.innerHTML = COLS.map((col, ci) => `
+    <div class="score-item">
+      <span class="score-label">${col}</span>
+      <span class="score-val">${counts[ci]}</span>
+      <span style="font-size:10px;color:var(--text-light);font-family:monospace;display:block;">
+        ${partials[ci] > 0 ? `+${partials[ci]} partial` : '—'}
+      </span>
+    </div>
+  `).join('');
+}
+
+function updateTimestamp() {
+  document.getElementById('timestamp').textContent = 
+    'Last updated: ' + new Date().toLocaleString();
+}
+
+function exportCSV() {
+  const headers = ['Venue', 'Acronym', ...COLS];
+  const dataRows = rows
+    .filter(r => !r.section)
+    .map(r => [
+      `"${r.name}"`,
+      r.abbr,
+      ...r.vals.map(v => v === 2 ? 'Y' : v === 1 ? '~' : '')
+    ]);
+  
+  const csv = [headers.join(','), ...dataRows.map(r => r.join(','))].join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'open_science_matrix.csv';
+  a.click();
+}
+
+updateScores();
+updateTimestamp();
+</script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+name: Open Science Policy Monitor
+
+on:
+  schedule:
+    # Run on the 1st of every month at 09:00 UTC (9pm NZST)
+    - cron: '0 9 1 * *'
+  workflow_dispatch:  # Allow manual trigger from GitHub UI
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install httpx
+
+      - name: Configure Git
+        run: |
+          git config user.name "Open Science Monitor Bot"
+          git config user.email "monitor@cathaldoyle.com"
+
+      - name: Run monitor
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python monitor.py
