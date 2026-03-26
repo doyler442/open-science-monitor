@@ -2,6 +2,7 @@
 """
 Open Science Policy Monitor
 Checks 19 IS venue author guideline pages monthly for open science policy changes.
+Uses Claude's web search tool to access venue pages (avoids publisher 403 blocks).
 Proposes updates as GitHub Pull Requests with evidence.
 """
 
@@ -20,8 +21,7 @@ VENUES_FILE = REPO_ROOT / "venues.json"
 PROMPT_FILE = REPO_ROOT / "prompt.txt"
 ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
 MODEL = "claude-sonnet-4-20250514"
-MAX_TOKENS = 2000
-FETCH_TIMEOUT = 30  # seconds per page fetch
+MAX_TOKENS = 4096
 
 
 def load_venues() -> dict:
@@ -34,77 +34,112 @@ def load_prompt() -> str:
         return f.read()
 
 
-# ---------- Fetch venue pages ----------
+# ---------- Call Claude API with web search ----------
 
-def fetch_page(url: str) -> str | None:
-    """Fetch a URL and return its text content, or None on failure."""
-    try:
-        r = httpx.get(url, timeout=FETCH_TIMEOUT, follow_redirects=True, headers={
-            "User-Agent": "OpenScienceMonitor/1.0 (academic research; contact: cathal.doyle@vuw.ac.nz)"
-        })
-        r.raise_for_status()
-        return r.text[:80_000]  # cap to avoid huge pages blowing context
-    except Exception as e:
-        print(f"  ⚠ Failed to fetch {url}: {e}")
-        return None
+def analyse_venue(venue: dict, system_prompt: str) -> dict | None:
+    """Ask Claude to search for and code a venue's open science policies."""
 
-
-def fetch_venue_content(venue: dict) -> str:
-    """Fetch all guide_urls for a venue and concatenate their content."""
-    pages = []
-    for url in venue["guide_urls"]:
-        print(f"  Fetching {url}")
-        content = fetch_page(url)
-        if content:
-            # Strip HTML tags naively for a rough text extraction
-            # (Claude handles messy HTML fine, but smaller payload = cheaper)
-            import re
-            text = re.sub(r'<script[^>]*>.*?</script>', '', content, flags=re.DOTALL)
-            text = re.sub(r'<style[^>]*>.*?</style>', '', text, flags=re.DOTALL)
-            text = re.sub(r'<[^>]+>', ' ', text)
-            text = re.sub(r'\s+', ' ', text).strip()
-            pages.append(f"--- Page: {url} ---\n{text[:30_000]}")
-    return "\n\n".join(pages) if pages else ""
-
-
-# ---------- Call Claude API ----------
-
-def analyse_venue(venue: dict, page_content: str, system_prompt: str) -> dict | None:
-    """Send page content to Claude API for coding."""
-    if not page_content:
-        return {"venue_id": venue["id"], "status": "error",
-                "error_message": "Could not fetch any author guideline pages"}
+    # Build a hint about known URLs so Claude knows where to look
+    url_hints = ""
+    if venue.get("guide_urls"):
+        url_hints = "\nKnown author guideline URLs (may have changed):\n"
+        for u in venue["guide_urls"]:
+            url_hints += f"  - {u}\n"
 
     user_msg = (
         f"Venue: {venue['name']} ({venue['abbr']})\n"
-        f"Venue ID: {venue['id']}\n\n"
-        f"Page content from author guidelines:\n\n{page_content}"
+        f"Venue ID: {venue['id']}\n"
+        f"Main URL: {venue['url']}\n"
+        f"{url_hints}\n"
+        f"Please search the web for this venue's current author guidelines "
+        f"and open science policies, then code them according to your instructions."
     )
 
     try:
-        r = httpx.post(
-            "https://api.anthropic.com/v1/messages",
-            headers={
-                "x-api-key": ANTHROPIC_API_KEY,
-                "anthropic-version": "2023-06-01",
-                "content-type": "application/json",
-            },
-            json={
-                "model": MODEL,
-                "max_tokens": MAX_TOKENS,
-                "system": system_prompt,
-                "messages": [{"role": "user", "content": user_msg}],
-            },
-            timeout=60,
-        )
-        r.raise_for_status()
-        data = r.json()
-        text = "".join(b["text"] for b in data["content"] if b["type"] == "text")
-        # Strip any accidental markdown fences
-        text = text.strip().removeprefix("```json").removesuffix("```").strip()
-        return json.loads(text)
+        # Initial request with web search tool
+        messages = [{"role": "user", "content": user_msg}]
+        result = _call_api(messages, system_prompt, venue)
+        return result
+
     except Exception as e:
-        print(f"  ⚠ Claude API error for {venue['abbr']}: {e}")
+        print(f"  ⚠ Error for {venue['abbr']}: {e}")
+        return None
+
+
+def _call_api(messages: list, system_prompt: str, venue: dict,
+              depth: int = 0) -> dict | None:
+    """Call Claude API, handling multi-turn tool use automatically."""
+    if depth > 10:
+        print(f"  ⚠ Too many tool use rounds for {venue['abbr']}, giving up")
+        return None
+
+    r = httpx.post(
+        "https://api.anthropic.com/v1/messages",
+        headers={
+            "x-api-key": ANTHROPIC_API_KEY,
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+        },
+        json={
+            "model": MODEL,
+            "max_tokens": MAX_TOKENS,
+            "system": system_prompt,
+            "tools": [
+                {
+                    "type": "web_search_20250305",
+                    "name": "web_search",
+                }
+            ],
+            "messages": messages,
+        },
+        timeout=120,
+    )
+    r.raise_for_status()
+    data = r.json()
+
+    stop_reason = data.get("stop_reason", "")
+
+    if stop_reason == "tool_use":
+        # Claude wants to search — continue the conversation
+        # Add assistant's response to messages
+        messages.append({"role": "assistant", "content": data["content"]})
+
+        # Build tool results for each tool use block
+        tool_results = []
+        for block in data.get("content", []):
+            if block.get("type") == "tool_use":
+                tool_results.append({
+                    "type": "tool_result",
+                    "tool_use_id": block["id"],
+                    "content": "Search results provided.",
+                })
+
+        messages.append({"role": "user", "content": tool_results})
+        return _call_api(messages, system_prompt, venue, depth + 1)
+
+    # Final response — extract JSON
+    text_parts = []
+    for block in data.get("content", []):
+        if block.get("type") == "text":
+            text_parts.append(block["text"])
+
+    text = "\n".join(text_parts).strip()
+
+    # Find the JSON object in the response
+    json_start = text.find("{")
+    json_end = text.rfind("}") + 1
+    if json_start == -1 or json_end == 0:
+        print(f"  ⚠ No JSON found in response for {venue['abbr']}")
+        print(f"    Response: {text[:300]}...")
+        return None
+
+    json_str = text[json_start:json_end]
+
+    try:
+        return json.loads(json_str)
+    except json.JSONDecodeError as e:
+        print(f"  ⚠ JSON parse error for {venue['abbr']}: {e}")
+        print(f"    Raw: {json_str[:300]}...")
         return None
 
 
@@ -167,7 +202,7 @@ def apply_changes(venues_data: dict, changes: list[dict]) -> dict:
     return updated
 
 
-# ---------- Generate HTML data array ----------
+# ---------- Generate venues-data.js ----------
 
 def generate_venues_data_js(venues_data: dict) -> str:
     """Generate the venues-data.js file content from venues.json."""
@@ -187,7 +222,6 @@ def generate_venues_data_js(venues_data: dict) -> str:
         for v in section["venues"]:
             display_name = v.get("html_name", v["name"])
             vals_str = "[" + ",".join(str(x) for x in v["vals"]) + "]"
-            # Escape single quotes in names
             safe_name = display_name.replace("'", "\\'")
             safe_abbr = v["abbr"].replace("'", "\\'")
             safe_url = v["url"].replace("'", "\\'")
@@ -282,12 +316,7 @@ def main():
 
     for venue in all_venues:
         print(f"▶ {venue['name']} ({venue['abbr']})")
-        content = fetch_venue_content(venue)
-        if not content:
-            print(f"  ⚠ No content fetched, skipping")
-            continue
-
-        result = analyse_venue(venue, content, system_prompt)
+        result = analyse_venue(venue, system_prompt)
         if not result:
             print(f"  ⚠ No result from API, skipping")
             continue
