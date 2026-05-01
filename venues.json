@@ -26,7 +26,16 @@
           "guide_urls": [
             "https://www.sciencedirect.com/journal/decision-support-systems/publish/guide-for-authors"
           ],
-          "vals": [1, 2, 1, 0, 0, 0, 0, 0]
+          "vals": [
+            1,
+            2,
+            2,
+            2,
+            0,
+            0,
+            0,
+            0
+          ]
         },
         {
           "id": "ejis",
@@ -37,7 +46,16 @@
             "https://www.tandfonline.com/journals/tjis20/about/aims-and-scope",
             "https://www.tandfonline.com/journals/tjis20/about/author-guidelines"
           ],
-          "vals": [1, 1, 0, 0, 0, 0, 0, 0]
+          "vals": [
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
         },
         {
           "id": "im",
@@ -48,7 +66,16 @@
           "guide_urls": [
             "https://www.sciencedirect.com/journal/information-and-management/publish/guide-for-authors"
           ],
-          "vals": [1, 2, 0, 0, 0, 0, 0, 0]
+          "vals": [
+            1,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
         },
         {
           "id": "io",
@@ -58,7 +85,16 @@
           "guide_urls": [
             "https://www.sciencedirect.com/journal/information-and-organization/publish/guide-for-authors"
           ],
-          "vals": [1, 2, 0, 0, 0, 0, 0, 0]
+          "vals": [
+            1,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
         },
         {
           "id": "isj",
@@ -68,7 +104,16 @@
           "guide_urls": [
             "https://onlinelibrary.wiley.com/page/journal/13652575/homepage/forauthors.html"
           ],
-          "vals": [1, 2, 2, 1, 0, 0, 0, 0]
+          "vals": [
+            1,
+            2,
+            2,
+            1,
+            0,
+            0,
+            0,
+            0
+          ]
         },
         {
           "id": "isr",
@@ -78,7 +123,16 @@
           "guide_urls": [
             "https://pubsonline.informs.org/page/isre/submission-guidelines"
           ],
-          "vals": [1, 0, 0, 0, 0, 0, 0, 0]
+          "vals": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
         },
         {
           "id": "jais",
@@ -88,7 +142,16 @@
           "guide_urls": [
             "https://aisel.aisnet.org/jais/authorinfo.html"
           ],
-          "vals": [1, 0, 1, 0, 0, 0, 0, 0]
+          "vals": [
+            1,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
         },
         {
           "id": "jit",
@@ -98,7 +161,16 @@
           "guide_urls": [
             "https://journals.sagepub.com/author-instructions/JIN"
           ],
-          "vals": [1, 0, 0, 0, 0, 0, 0, 0]
+          "vals": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
         },
         {
           "id": "jmis",
@@ -109,7 +181,16 @@
             "https://www.tandfonline.com/journals/mmis20/about/aims-and-scope",
             "https://www.tandfonline.com/journals/mmis20/about/author-guidelines"
           ],
-          "vals": [1, 1, 0, 0, 0, 0, 0, 0]
+          "vals": [
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
         },
         {
           "id": "jsis",
@@ -119,7 +200,16 @@
           "guide_urls": [
             "https://www.sciencedirect.com/journal/the-journal-of-strategic-information-systems/publish/guide-for-authors"
           ],
-          "vals": [1, 2, 0, 0, 0, 0, 0, 0]
+          "vals": [
+            1,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
         },
         {
           "id": "misq",
@@ -129,7 +219,16 @@
           "guide_urls": [
             "https://misq.umn.edu/submission-guidelines"
           ],
-          "vals": [1, 0, 1, 1, 0, 0, 0, 0]
+          "vals": [
+            1,
+            0,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0
+          ]
         }
       ]
     },
@@ -144,7 +243,16 @@
           "guide_urls": [
             "https://aisel.aisnet.org/cais/authorinfo.html"
           ],
-          "vals": [2, 0, 0, 0, 0, 0, 2, 2]
+          "vals": [
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            2,
+            2
+          ]
         },
         {
           "id": "bise",
@@ -155,7 +263,16 @@
           "guide_urls": [
             "https://www.bise-journal.com/submission-guidelines"
           ],
-          "vals": [1, 0, 0, 0, 0, 1, 0, 0]
+          "vals": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0
+          ]
         },
         {
           "id": "ajis",
@@ -165,7 +282,16 @@
           "guide_urls": [
             "https://ajis.aaisnet.org/index.php/ajis/about/submissions"
           ],
-          "vals": [2, 0, 1, 0, 0, 0, 0, 0]
+          "vals": [
+            2,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
         }
       ]
     },
@@ -180,7 +306,16 @@
           "guide_urls": [
             "https://icis2026.aisconferences.org/submissions/"
           ],
-          "vals": [0, 0, 0, 0, 0, 0, 0, 0]
+          "vals": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
         },
         {
           "id": "ecis",
@@ -190,7 +325,16 @@
           "guide_urls": [
             "https://ecis2026.eu/submissions/"
           ],
-          "vals": [0, 0, 0, 0, 0, 0, 0, 0]
+          "vals": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
         },
         {
           "id": "amcis",
@@ -200,7 +344,16 @@
           "guide_urls": [
             "https://amcis2026.aisconferences.org/submissions/"
           ],
-          "vals": [0, 1, 0, 0, 0, 0, 0, 0]
+          "vals": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
         },
         {
           "id": "hicss",
@@ -210,7 +363,16 @@
           "guide_urls": [
             "https://hicss.hawaii.edu/authors/"
           ],
-          "vals": [2, 0, 0, 0, 0, 0, 0, 0]
+          "vals": [
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
         },
         {
           "id": "desrist",
@@ -220,10 +382,19 @@
           "guide_urls": [
             "https://desrist.org/"
           ],
-          "vals": [0, 0, 0, 0, 0, 0, 0, 0]
+          "vals": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
         }
       ]
     }
   ],
-  "last_reviewed": "2026-03-26"
+  "last_reviewed": "2026-05-01"
 }
